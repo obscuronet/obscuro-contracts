@@ -97,9 +97,18 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
 
     /**
      * @dev See {IERC20-balanceOf}.
+     * NOTE: The method checks and only reveals the balance of the transaction originator, 
+     * even if an intermediary contract is used. Tx.origin is not recommended for authorisation, 
+     * since it is susceptable to phishing (where the user is persuaded to call an intermediate
+     * contract which then drains their ERC20 account), but here there is no direct financial gain 
+     * to phishing. The alternative is to check for msg.sender, but that would prevent this ERC20
+     * from being called by an intermediate contract.
      */
     function balanceOf(address account) public view virtual override returns (uint256) {
-        return _balances[account];
+        if (tx.origin == account) {
+            return _balances[account];
+        }
+        return 0;
     }
 
     /**

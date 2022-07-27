@@ -27,7 +27,8 @@ interface IERC20 {
     function totalSupply() external view returns (uint256);
 
     /**
-     * @dev Returns the amount of tokens owned by `account`.
+     * @dev Returns the amount of tokens owned by `account`. This is modified for Obscuro 
+     * so that a requestor can only view the balance of their own account.
      */
     function balanceOf(address account) external view returns (uint256);
 
